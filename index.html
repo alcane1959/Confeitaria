@@ -139,24 +139,20 @@
 
     <script>
         const CHAVE_NOME_CONFEITARIA = 'nome_confeitaria';
-        let nomeConfeitaria = localStorage.getItem(CHAVE_NOME_CONFEITARIA) || '';
+        const nomeConfeitariaSalvo = localStorage.getItem(CHAVE_NOME_CONFEITARIA);
+        let nomeConfeitaria = nomeConfeitariaSalvo || '';
 
         function solicitarNomeConfeitaria() {
-            let novoNome = '';
-            while (!novoNome) {
-                const resposta = prompt('Digite o nome da sua confeitaria:', nomeConfeitaria);
-                if (resposta === null && nomeConfeitaria) return;
-                novoNome = (resposta || '').trim();
-                if (!novoNome) alert('Por favor, informe o nome da confeitaria.');
-            }
-            nomeConfeitaria = novoNome;
+            const resposta = prompt('Digite o nome da sua confeitaria (pode deixar em branco):', nomeConfeitaria);
+            if (resposta === null) return;
+            nomeConfeitaria = resposta.trim();
             localStorage.setItem(CHAVE_NOME_CONFEITARIA, nomeConfeitaria);
             atualizarNomeConfeitaria();
         }
 
         function atualizarNomeConfeitaria() {
-            document.getElementById('nome-confeitaria').innerText = `🎂 ${nomeConfeitaria}`;
-            document.title = `${nomeConfeitaria} - Confeitaria`;
+            document.getElementById('nome-confeitaria').innerText = nomeConfeitaria ? `🎂 ${nomeConfeitaria}` : '';
+            document.title = nomeConfeitaria ? `${nomeConfeitaria} - Confeitaria` : 'Confeitaria';
         }
 
         function alterarNomeConfeitaria() {
@@ -315,7 +311,8 @@
 
         function enviarPedido(i) {
             const p = pedidos[i];
-            const msg = `*PEDIDO - ${nomeConfeitaria.toUpperCase()} - CONFEITARIA*\n\nOlá, *${p.cliente}*!\nDetalhes do pedido:\n\n📅 Data: ${formatarDataBR(p.data)}\n🎂 Produto: ${p.produto}\n💰 Valor: *R$ ${p.valor.toFixed(2)}*\n💳 PIX: 121.108.468-01\n\n\nObrigada! 👩🏻‍🍳`;
+            const cabecalhoPedido = nomeConfeitaria ? `PEDIDO - ${nomeConfeitaria.toUpperCase()} - CONFEITARIA` : 'PEDIDO - CONFEITARIA';
+            const msg = `*${cabecalhoPedido}*\n\nOlá, *${p.cliente}*!\nDetalhes do pedido:\n\n📅 Data: ${formatarDataBR(p.data)}\n🎂 Produto: ${p.produto}\n💰 Valor: *R$ ${p.valor.toFixed(2)}*\n💳 PIX: 121.108.468-01\n\n\nObrigada! 👩🏻‍🍳`;
             window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`);
         }
 
@@ -348,7 +345,7 @@
         }
 
         // Inicialização
-        if (!nomeConfeitaria) solicitarNomeConfeitaria();
+        if (nomeConfeitariaSalvo === null) solicitarNomeConfeitaria();
         atualizarNomeConfeitaria();
         inicializarFiltros();
         renderizar();
