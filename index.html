@@ -132,8 +132,8 @@
 
     <div class="barra-inferior">
         <div class="grade-botoes">
-            <button class="btn-rodape btn-backup" onclick="exportarBackup()">📥 Backup (Salvar)</button>
-            <button class="btn-rodape btn-restaurar" onclick="document.getElementById('importFile').click()">📂 Abrir Backup</button>
+            <button class="btn-rodape btn-backup" onclick="exportarBackup()">📥 Exportar</button>
+            <button class="btn-rodape btn-restaurar" onclick="document.getElementById('importFile').click()">📂 Importar</button>
             <button class="btn-rodape btn-clean-mes" onclick="limparVendasMes()">⚠️ Limpar Vendas do Período Selecionado</button>
         </div>
         <input type="file" id="importFile" accept=".json" onchange="importarBackup(event)" style="display: none;">
